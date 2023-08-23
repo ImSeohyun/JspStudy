@@ -1,7 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script> 
+<script>
+$(document).ready(function(){
+	$("#up").on("click",function(){
+		var gAmount = Number.parseInt($("#gAmount").val());
+		$("#gAmount").val(gAmount+1);
+	});
 
+	$("#down").on("click",function(){
+		var gAmount = Number.parseInt($("#gAmount").val());
+		if(gAmount>1){
+		$("#gAmount").val(gAmount-1);
+		}
+	});
+	
+});
+</script>
 <c:set var="dto" value="${goodsRetrieve}" />
 <form name="goodRetrieveForm" method="GET" action="#">
 	    <input type="hidden" name="gImage" value="${dto.gImage}"> <input

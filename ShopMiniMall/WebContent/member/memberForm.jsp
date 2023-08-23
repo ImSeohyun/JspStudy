@@ -67,7 +67,7 @@
 <input type="text" name="email1">@<input type="text" name="email2" placeholder="직접입력">
 <select>
  <option value="daum.net">daum.net</option>
- <option value="google.com">google.com</option>
+ <option value="gmail.com">gmail.com</option>
  <option value="naver.com">naver.com</option>
 </select>
 <br>

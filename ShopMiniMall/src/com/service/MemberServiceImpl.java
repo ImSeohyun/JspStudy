@@ -15,44 +15,57 @@ public class MemberServiceImpl implements MemberService {
 		MemberDTO dto = null;
 		SqlSession session = MySqlSessionFactory.getSession();
 		try {
-		   // DAO 연동
+			// DAO 연동
 			MemberDAO dao = new MemberDAO();
 			dto = dao.idCheck(session, userid);
-		}finally {
+		} finally {
 			session.close();
 		}
-		
+
 		return dto;
 	}
 
 	@Override
 	public int memberAdd(MemberDTO dto) {
-		 int n = 0;
-		  SqlSession session = MySqlSessionFactory.getSession();
-			try {
-				 // DAO 연동
-				MemberDAO dao = new MemberDAO();
-				n = dao.memberAdd(session, dto);
-				session.commit();
-			}finally {
-				session.close();
-			}
+		int n = 0;
+		SqlSession session = MySqlSessionFactory.getSession();
+		try {
+			// DAO 연동
+			MemberDAO dao = new MemberDAO();
+			n = dao.memberAdd(session, dto);
+			session.commit();
+		} finally {
+			session.close();
+		}
 		return n;
 	}
 
 	@Override
 	public MemberDTO login(HashMap<String, String> map) {
 		MemberDTO dto = null;
-		  SqlSession session = MySqlSessionFactory.getSession();
-			try {
-				 // DAO 연동
-				MemberDAO dao = new MemberDAO();
-				dto = dao.login(session, map);
-			}finally {
-				session.close();
-			}
+		SqlSession session = MySqlSessionFactory.getSession();
+		try {
+			// DAO 연동
+			MemberDAO dao = new MemberDAO();
+			dto = dao.login(session, map);
+		} finally {
+			session.close();
+		}
 		return dto;
 	}
 
+	@Override
+	public MemberDTO mypage(String userid) {
+		MemberDTO dto = null;
+		SqlSession session = MySqlSessionFactory.getSession();
+		try {
+			// DAO 연동
+			MemberDAO dao = new MemberDAO();
+			dto = dao.mypage(session, userid);
+		} finally {
+			session.close();
+		}
+		return dto;
+	}
 
 }

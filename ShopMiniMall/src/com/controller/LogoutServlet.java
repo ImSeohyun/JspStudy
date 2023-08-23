@@ -23,6 +23,7 @@ public class LogoutServlet extends HttpServlet {
 		//로그인 여부 확인
 		HttpSession session = request.getSession();
 		MemberDTO dto = (MemberDTO) session.getAttribute("login");
+		
 		String nextPage=null;
 		if(dto!=null) {
 			nextPage="main";

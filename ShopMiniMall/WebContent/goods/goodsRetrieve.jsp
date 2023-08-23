@@ -16,14 +16,26 @@ $(document).ready(function(){
 		}
 	});
 	
+	//장바구니 이벤트 처리
+	$("#cartBtn").on("click", function(){
+		//배열로 반환
+		var f = $("#myForm");
+		console.log(f);
+		//form태그의 action 수정
+		f[0].action="CartAddServlet";
+		f.method="get";
+	});
+	//구매 이벤트 처리
+
+	
 });
 </script>
 <c:set var="dto" value="${goodsRetrieve}" />
-<form name="goodRetrieveForm" method="GET" action="#">
-	    <input type="hidden" name="gImage" value="${dto.gImage}"> <input
-		type="hidden" name="gCode" value="${dto.gCode }"> <input
-		type="hidden" name="gName" value="${dto.gName }"> <input
-		type="hidden" name="gPrice" value="${dto.gPrice }">
+<form id="myForm" name="goodRetrieveForm" method="GET" action="#">
+	    <input type="hidden" name="gImage" value="${dto.gImage}"> 
+	    <input type="hidden" name="gCode" value="${dto.gCode }"> 
+	    <input type="hidden" name="gName" value="${dto.gName }"> 
+	    <input type="hidden" name="gPrice" value="${dto.gPrice }">
 
 	<table width="100%" cellspacing="0" cellpadding="0">
 		<tr>
@@ -108,7 +120,7 @@ $(document).ready(function(){
 		</tr>
 	</table>
 
-	<br> <button>구매</button>
+	<br> <button id="buyBtn">구매</button>
 	&nbsp;&nbsp;
-	<button>장바구니</button>
+	<button id="cartBtn">장바구니</button>
 </form>

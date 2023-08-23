@@ -16,5 +16,5 @@
 안녕하세요 ${login.username}님<br>
 <a href="<c:url value='LogoutServlet' />">로그아웃</a>
 <a href="<c:url value='MyPageServlet' />">mypage</a>
-<a href="<c:url value='CartServlet' />">장바구니목록</a>
+<a href="<c:url value='CartListServlet' />">장바구니목록</a>
 </c:if>

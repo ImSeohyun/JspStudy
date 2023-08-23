@@ -29,5 +29,19 @@ public class CartServiceImpl implements CartService {
 		return n;
 	}
 
+	@Override
+	public List<CartDTO> cartList(String userid) {
+		List<CartDTO> list = null;
+		SqlSession session = MySqlSessionFactory.getSession();
+		try {
+			// DAO 연동
+			CartDAO dao = new CartDAO();
+			list = dao.cartList(session, userid);
+		} finally {
+			session.close();
+		}
+		return list;
+	}
+
 	
 }

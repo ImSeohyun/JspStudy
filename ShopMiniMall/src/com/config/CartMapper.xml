@@ -12,6 +12,13 @@
 	values (cart_seq.nextval, #{userid},#{gCode},#{gName},
 			#{gPrice},#{gSize},#{gColor},#{gAmount},#{gImage})
 	</insert>
+	
+	<!-- 장바구니 목록 -->
+	<select id="cartList" parameterType="string" resultType="CartDTO">
+	select num, userid, gCode, gName, gPrice, gSize, gColor, gAmount, gImage 
+	from cart
+	where userid = #{userid}
+	</select>
 </mapper>
 
 

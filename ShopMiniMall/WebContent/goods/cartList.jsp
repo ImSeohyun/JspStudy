@@ -32,7 +32,7 @@
             });
 	   
 	   });//end updateBtn
-	   
+	   //단일 삭제 이벤트
 	   $(".deleteBtn").on("click",function(){
 		   var num = $(this).attr("data-num");
 		   location.href="CartDeleteServlet?num="+num;
@@ -40,6 +40,18 @@
 		  
 	   
 	   });//end deleteBtn
+		//전체 선택 이벤트
+	   $("#allCheck").on("click",function(){
+			//allcheck 체크 여부 확인
+			var allCheck = this.checked;
+				
+			//check해야 될 체크박스 얻기
+			//var chk = $(".check");
+			$(".check").each(function(){
+				this.checked = allCheck; //allCheck의 true/false값을 각각에 적용				
+			});
+				
+	   });//end deleteAll
 
    });
 </script>
@@ -108,7 +120,7 @@
 		<tr>
 			<td class="td_default" width="80">
 			<!-- checkbox는 체크된 값만 서블릿으로 넘어간다. 따라서 value에 삭제할 num값을 설정한다. -->
-			<input type="checkbox" name="check" id="check81" class="check" value="81"></td>
+			<input type="checkbox" name="check" id="check${dto.num}" class="check" value="81"></td>
 			<td class="td_default" width="80">${dto.num }</td>
 			<td class="td_default" width="80">
 			<img src="images/items/${dto.gImage}.gif" border="0" align="center" width="80" />
@@ -150,8 +162,8 @@
 	</tr>
 
 	<tr>
-		<td align="center" colspan="5"><a class="a_black"
-			href=""> 전체 주문하기 </a>&nbsp;&nbsp;&nbsp;&nbsp; 
+		<td align="center" colspan="5">
+		<a class="a_black" href=""> 전체 주문하기 </a>&nbsp;&nbsp;&nbsp;&nbsp; 
 			<a class="a_black" href=""> 전체 삭제하기 </a>&nbsp;&nbsp;&nbsp;&nbsp;
 			<a class="a_black" href=""> 계속 쇼핑하기 </a>&nbsp;&nbsp;&nbsp;&nbsp;
 		</td>

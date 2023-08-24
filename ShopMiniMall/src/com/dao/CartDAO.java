@@ -27,10 +27,10 @@ public class CartDAO {
 
 	// 장바구니 단일 삭제
 	public int cartDelete(SqlSession session, int num) {
-		return session.update("CartMapper.cartDelete", num);
+		return session.delete("CartMapper.cartDelete", num);
 	}
 	// 장바구니 다중 삭제
 	public int cartDeleteAll(SqlSession session, List<String> num) {
-		return session.update("CartMapper.cartDeleteAll", num);
+		return session.delete("CartMapper.cartDeleteAll", num);
 	}
 }

@@ -1,9 +1,39 @@
 <%@page import="com.dto.CartDTO"%>
 <%@page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script>
+   $(document).ready(function(){
+	   //수정 버튼 이벤트
+	   $(".updateBtn").on("click",function(){
+		   var num = $(this).attr("data-num");
+		   var gAmount = $("#gAmount"+num).val();
+
+		   // ajax 연동
+		   $.ajax({
+               type:"get",
+               url:"CartUpdateServlet",
+               data:{
+            	   num:num,
+            	   gAmount:gAmount
+               },  // 요청코드
+               dataType:'text',  //  응답받은 데이터 타입
+               success:function(data, status, xhr){
+					//합계 변경
+					var price = $("#gPrice"+num).text();
+					console.log(num+"  "+gAmount+"   "+price);
+					$("#sum"+num).text(Number.parseInt(price)* Number.parseInt(gAmount));
+               },
+               error:function(xhr, status, error){
+                    console.log("error 발생");
+               }
+            });
+	   
+	   });
+   });
+</script>
 <table width="90%" cellspacing="0" cellpadding="0" border="0">
 
 	<tr>
@@ -79,14 +109,16 @@
 			<font size="2" color="#665b5f">[옵션 : 사이즈(${dto.gSize}), 색상(${dto.gColor})]
 			</font>
 			</td>
-			<td class="td_default" align="center" width="110">￦${dto.gPrice}</td>
+			<td class="td_default" align="center" width="110">
+			<span id="gPrice${dto.num}">${dto.gPrice}</span></td>
 			<td class="td_default" align="center" width="90"><input
 				class="input_default" type="text" name="gAmount"
-				id="gAmount" style="text-align: right" maxlength="3"
-				size="2" value="${dto.gAmount}"></input></td>
-			<td><input type="button" value="수정"/></td>
+				id="gAmount${dto.num }" style="text-align: right" maxlength="3"
+				size="2" value="${dto.gAmount}" ></input></td>
+			<td><input type="button" value="수정" class="updateBtn" data-num="${dto.num }"/></td>
 			<td class="td_default" align="center" width="80"
-				style='padding-left: 5px'><span id="sum81">
+				style='padding-left: 5px'>
+				<span id="sum${dto.num}" data-price="${dto.gPrice}">
 				￦${dto.gAmount * dto.gPrice}
 				</span></td>
 			<td><input type="button" value="주문"></td>

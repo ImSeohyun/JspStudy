@@ -31,7 +31,16 @@
                }
             });
 	   
-	   });
+	   });//end updateBtn
+	   
+	   $(".deleteBtn").on("click",function(){
+		   var num = $(this).attr("data-num");
+		   location.href="CartDeleteServlet?num="+num;
+
+		  
+	   
+	   });//end deleteBtn
+
    });
 </script>
 <table width="90%" cellspacing="0" cellpadding="0" border="0">
@@ -123,7 +132,7 @@
 				</span></td>
 			<td><input type="button" value="주문"></td>
 			<td class="td_default" align="center" width="30"
-				style='padding-left: 10px'><input type="button" value="삭제"></td>
+				style='padding-left: 10px'><input type="button" value="삭제" class="deleteBtn" data-num="${dto.num}"></td>
 			<td height="10"></td>
 		</tr>
 

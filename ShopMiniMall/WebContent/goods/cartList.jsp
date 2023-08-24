@@ -1,60 +1,74 @@
 <%@page import="com.dto.CartDTO"%>
 <%@page import="java.util.List"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script> 
 <script>
    $(document).ready(function(){
-	   //수정 버튼 이벤트
-	   $(".updateBtn").on("click",function(){
-		   var num = $(this).attr("data-num");
-		   var gAmount = $("#gAmount"+num).val();
-
-		   // ajax 연동
-		   $.ajax({
-               type:"get",
-               url:"CartUpdateServlet",
-               data:{
-            	   num:num,
-            	   gAmount:gAmount
-               },  // 요청코드
-               dataType:'text',  //  응답받은 데이터 타입
-               success:function(data, status, xhr){
-					//합계 변경
-					var price = $("#gPrice"+num).text();
-					console.log(num+"  "+gAmount+"   "+price);
-					$("#sum"+num).text(Number.parseInt(price)* Number.parseInt(gAmount));
-               },
-               error:function(xhr, status, error){
-                    console.log("error 발생");
-               }
-            });
 	   
+	   // 수정 버튼 이벤트
+	   $(".updateBtn").on("click", function(){
+		    var num = $(this).attr("data-num");
+		    var gAmount = $("#gAmount"+num).val();
+
+		    //ajax 연동
+		    $.ajax({
+	               type:"get",
+	               url:"CartUpdateServlet",
+	               data:{
+	            	   num:num,
+	            	   gAmount:gAmount
+	               },  // 요청코드
+	               dataType:'text',  //  응답받은 데이터 타입
+	               success:function(data, status, xhr){
+	                   // 합계 변경
+	                   var price = $("#gPrice"+num).text();
+	                   //alert(num + "\t" + price + "\t" + gAmount);
+	            	   $("#sum"+num).text( Number.parseInt(price) * Number.parseInt(gAmount));
+	               },
+	               error:function(xhr, status, error){
+	                    console.log("erro 발생");
+	               }
+	            });
+		    
 	   });//end updateBtn
-	   //단일 삭제 이벤트
-	   $(".deleteBtn").on("click",function(){
-		   var num = $(this).attr("data-num");
-		   location.href="CartDeleteServlet?num="+num;
-
-		  
 	   
-	   });//end deleteBtn
-		//전체 선택 이벤트
-	   $("#allCheck").on("click",function(){
-			//allcheck 체크 여부 확인
-			var allCheck = this.checked;
-				
-			//check해야 될 체크박스 얻기
-			//var chk = $(".check");
-			$(".check").each(function(){
-				this.checked = allCheck; //allCheck의 true/false값을 각각에 적용				
-			});
-				
-	   });//end deleteAll
-
+	   // 단일 삭제 버튼 이벤트
+	   $(".deleteBtn").on("click", function(){
+		   var num = $(this).attr("data-num");
+		   //alert(num);
+		   location.href="CartDeleteServlet?num="+num;
+		   
+	   });
+	   
+	   // 전체 선택 이벤트
+	   $("#allCheck").on("click", function(){
+		   
+		   // allCheck의 체크 여부 확인
+		   //alert(this.checked);
+		   var allCheck= this.checked;
+		   
+		   // check해야될 체크박스 얻기
+		   //var chk = $(".check");
+           $(".check").each(function(idx,ele){
+               this.checked  = allCheck;
+           });
+		   
+	   });
+	   
+	   // 전체 삭제 이벤트
+	   // form 태그 밖에 있는 버튼을  form태그안의 submit 버튼처럼 동작처리
+	   $("#deleteAll").on("click", function(){
+		  
+		    var f = $("form")[0];
+		    f.action="CartDeleteAllServlet";
+		    f.method="get";
+		    f.submit();  // submit 처리
+	   });
+	   
    });
-</script>
+ </script>
 <table width="90%" cellspacing="0" cellpadding="0" border="0">
 
 	<tr>
@@ -83,7 +97,10 @@
 
 	<tr>
 		<td class="td_default" align="center">
-		<input type="checkbox" name="allCheck" id="allCheck"> <strong>전체선택</strong></td>
+		
+		<input type="checkbox" name="allCheck" id="allCheck"> <strong>전체선택</strong>
+		
+		</td>
 		<td class="td_default" align="center"><strong>주문번호</strong></td>
 		<td class="td_default" align="center" colspan="2"><strong>상품정보</strong></td>
 		<td class="td_default" align="center"><strong>판매가</strong></td>
@@ -105,52 +122,48 @@
 	</tr>
 
 
-
-	<form name="myForm">
-
-<c:forEach var="dto" items="${cartList}">
-	    
-		 <input type="text" name="num81" value="${dto.num}" id="num81">
-		 <input type="text" name="gImage81" value="${dto.gImage}" id="gImage81">
-		 <input type="text" name="gName81" value="${dto.gName}" id="gName81">
-		  <input type="text" name="gSize81" value="${dto.gSize}" id="gSize81">
-		   <input type="text" name="gColor81" value="${dto.gColor}" id="gColor81"> 
-		   <input type="text" name="gPrice81" value="${dto.gPrice}" id="gPrice81">
-
+>>>
+<form name="myForm">
+<c:forEach  var="dto"  items="${cartList}" varStatus="status">
+	
 		<tr>
 			<td class="td_default" width="80">
+			
 			<!-- checkbox는 체크된 값만 서블릿으로 넘어간다. 따라서 value에 삭제할 num값을 설정한다. -->
-			<input type="checkbox" name="check" id="check${dto.num}" class="check" value="81"></td>
-			<td class="td_default" width="80">${dto.num }</td>
-			<td class="td_default" width="80">
-			<img src="images/items/${dto.gImage}.gif" border="0" align="center" width="80" />
+			<input type="checkbox" name="check"  class="check" value="${dto.num}">
 			</td>
-			<td class="td_default" width="300" style='padding-left: 30px'>
-			${dto.gName} <br> 
-			<font size="2" color="#665b5f">[옵션 : 사이즈(${dto.gSize}), 색상(${dto.gColor})]
-			</font>
-			</td>
+			
+			
+			<td class="td_default" width="80">${dto.num}</td>
+			<td class="td_default" width="80"><img
+				src="images/items/${dto.gImage}.gif" border="0" align="center"
+				width="80" /></td>
+			<td class="td_default" width="300" style='padding-left: 30px'>${dto.gName}
+				<br> <font size="2" color="#665b5f">[옵션 : 사이즈(${dto.gSize})
+					, 색상(${dto.gColor})]
+			</font></td>
 			<td class="td_default" align="center" width="110">
-			<span id="gPrice${dto.num}">${dto.gPrice}</span></td>
-			<td class="td_default" align="center" width="90"><input
-				class="input_default" type="text" name="gAmount"
-				id="gAmount${dto.num }" style="text-align: right" maxlength="3"
-				size="2" value="${dto.gAmount}" ></input></td>
-			<td><input type="button" value="수정" class="updateBtn" data-num="${dto.num }"/></td>
+			  <span id="gPrice${dto.num}">${dto.gPrice}</span>
+			</td>
+			<td class="td_default" align="center" width="90">
+			<input class="input_default" type="text" name="gAmount"
+				id="gAmount${dto.num}" style="text-align: right" maxlength="3"
+				size="2" value="${dto.gAmount}"></input></td>
+			<td><input type="button" value="수정" class="updateBtn" data-num="${dto.num}" /></td>
 			<td class="td_default" align="center" width="80"
 				style='padding-left: 5px'>
 				<span id="sum${dto.num}" data-price="${dto.gPrice}">
-				￦${dto.gAmount * dto.gPrice}
+				   ${dto.gAmount * dto.gPrice}
 				</span></td>
 			<td><input type="button" value="주문"></td>
 			<td class="td_default" align="center" width="30"
-				style='padding-left: 10px'><input type="button" value="삭제" class="deleteBtn" data-num="${dto.num}"></td>
+				style='padding-left: 10px'>
+			   <input type="button" value="삭제" class="deleteBtn" data-num="${dto.num}" >
+			</td>
 			<td height="10"></td>
 		</tr>
 
-
 </c:forEach>
-
 	</form>
 	<tr>
 		<td colspan="10">
@@ -162,9 +175,9 @@
 	</tr>
 
 	<tr>
-		<td align="center" colspan="5">
-		<a class="a_black" href=""> 전체 주문하기 </a>&nbsp;&nbsp;&nbsp;&nbsp; 
-			<a class="a_black" href=""> 전체 삭제하기 </a>&nbsp;&nbsp;&nbsp;&nbsp;
+		<td align="center" colspan="5"><a class="a_black"
+			href=""> 전체 주문하기 </a>&nbsp;&nbsp;&nbsp;&nbsp; 
+			<button id="deleteAll">전체 삭제하기 </button> &nbsp;&nbsp;&nbsp;&nbsp;
 			<a class="a_black" href=""> 계속 쇼핑하기 </a>&nbsp;&nbsp;&nbsp;&nbsp;
 		</td>
 	</tr>
